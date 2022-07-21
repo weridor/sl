@@ -10,4 +10,4 @@ ARG JAR_FILE=target/*.jar
 ADD ${JAR_FILE} app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["sh","-c","java -Djava.security.egd=file:/dev/./urandom -jar $JAVA_OPTS app.jar"]
+ENTRYPOINT ["sh","-c","java -Dserver.port=8080 -Djava.security.egd=file:/dev/./urandom -jar $JAVA_OPTS app.jar"]
