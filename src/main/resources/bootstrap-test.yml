@@ -10,7 +10,7 @@ spring:
     nacos:
       username: nacos
       password: nacos
-      server-addr: 172.17.2.135:8848
+      server-addr: nacos.sl-express.com
       discovery:
         namespace: ecae68ba-7b43-4473-a980-4ddeb6157bdc
       config:
@@ -19,7 +19,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowed-origins: "*"
+            allowed-origin-patterns: "*"
             allowed-headers: "*"
             allow-credentials: true
             allowed-methods:
@@ -37,6 +37,7 @@ spring:
           predicates:
             - Path=/courier/**
           filters:
+            - StripPrefix=1
             - CourierToken
             - AddRequestHeader=X-Request-From, sl-express-gateway
         - id: sl-express-ms-web-customer
@@ -44,6 +45,7 @@ spring:
           predicates:
             - Path=/customer/**
           filters:
+            - StripPrefix=1
             - CustomerToken
             - AddRequestHeader=X-Request-From, sl-express-gateway
         - id: sl-express-ms-web-driver
@@ -51,6 +53,7 @@ spring:
           predicates:
             - Path=/driver/**
           filters:
+            - StripPrefix=1
             - DriverToken
             - AddRequestHeader=X-Request-From, sl-express-gateway
         - id: sl-express-ms-web-manager
@@ -58,6 +61,7 @@ spring:
           predicates:
             - Path=/manager/**
           filters:
+            - StripPrefix=1
             - ManagerToken
             - AddRequestHeader=X-Request-From, sl-express-gateway
 itcast:
@@ -73,9 +77,8 @@ role:
   manager: ${role.manager}
   courier: ${role.courier}
   driver: ${role.driver}
+
 sl:
-  auth:
-    pub: auth/pub.key
   noAuthPaths:
     - /courier/login/account
     - /courier/swagger-ui.html
@@ -103,4 +106,3 @@ sl:
     - /manager/captcha
   jwt:
     user-secret-key: ${sl.jwt.user-secret-key}
-    user-ttl: ${sl.jwt.user-ttl}

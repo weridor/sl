@@ -10,7 +10,7 @@ spring:
     nacos:
       username: nacos
       password: nacos
-      server-addr: 192.168.150.101:8848
+      server-addr: nacos.sl-express.com
       discovery:
         namespace: ecae68ba-7b43-4473-a980-4ddeb6157bdc
       config:
@@ -106,4 +106,3 @@ sl:
     - /manager/captcha
   jwt:
     user-secret-key: ${sl.jwt.user-secret-key}
-    user-ttl: ${sl.jwt.user-ttl}
