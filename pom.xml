@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.sl-express</groupId>
         <artifactId>sl-express-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <groupId>com.sl-express.gateway</groupId>
