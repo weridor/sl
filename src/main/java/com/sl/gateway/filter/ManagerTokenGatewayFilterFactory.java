@@ -27,9 +27,6 @@ public class ManagerTokenGatewayFilterFactory extends AbstractGatewayFilterFacto
     @Resource
     private TokenCheckService tokenCheckService;
 
-    @Value("${role.manager}")
-    private String roleId;
-
     @Override
     public GatewayFilter apply(Object config) {
         return new TokenGatewayFilter(this.myConfig, this);
@@ -37,6 +34,12 @@ public class ManagerTokenGatewayFilterFactory extends AbstractGatewayFilterFacto
 
     @Override
     public AuthUserInfoDTO check(String token) {
+        try {
+            //校验token
+            return tokenCheckService.parserToken(token);
+        } catch (AuthSdkException e) {
+            // 校验失败
+        }
         return null;
     }
 

@@ -32,6 +32,7 @@ public class DriverTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
     @Override
     public AuthUserInfoDTO check(String token) {
         try {
+            //校验token
             return this.tokenCheckService.parserToken(token);
         } catch (AuthSdkException e) {
             // 校验失败
