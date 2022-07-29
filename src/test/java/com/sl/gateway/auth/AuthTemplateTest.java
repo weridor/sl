@@ -2,16 +2,19 @@ package com.sl.gateway.auth;
 
 import cn.hutool.json.JSONUtil;
 import com.itheima.auth.boot.autoconfigure.AuthorityProperties;
+import com.itheima.auth.factory.AuthTemplateFactory;
 import com.itheima.auth.sdk.AuthTemplate;
 import com.itheima.auth.sdk.common.Result;
 import com.itheima.auth.sdk.dto.AuthUserInfoDTO;
 import com.itheima.auth.sdk.dto.LoginDTO;
+import com.itheima.auth.sdk.dto.UserDTO;
 import com.itheima.auth.sdk.service.TokenCheckService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author zzj
@@ -29,25 +32,29 @@ public class AuthTemplateTest {
 
     @Test
     public void testLogin() {
+        //登录
         Result<LoginDTO> result = this.authTemplate.opsForLogin()
-                .token("courier", "123456");
-        System.out.println(result.getData().getToken().getToken());
+                .token("zhangsan", "123456");
 
-        authTemplate.getAuthorityConfig().setToken(result.getData().getToken().getToken());
-        Long id = result.getData().getUser().getId();
-        System.out.println(result.getData().getUser());
-        System.out.println(authTemplate.opsForRole().findRoleByUserId(id));
+        String token = result.getData().getToken().getToken();
+        System.out.println("token为：" + token);
+
+        UserDTO user = result.getData().getUser();
+        System.out.println("user信息：" + user);
+
+        //查询角色
+        Result<List<Long>> resultRole = AuthTemplateFactory.get(token).opsForRole()
+                .findRoleByUserId(user.getId());
+        System.out.println(resultRole);
     }
 
     @Test
     public void checkToken() {
-        //admin
-        String token = "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI5ODQxMjUyNTk4MzE1ODU4ODkiLCJhY2NvdW50IjoiY291cmllciIsIm5hbWUiOiLlv6vpgJLlkZgiLCJvcmdpZCI6OTg3MzI2OTY5MzYyMjg4MTkzLCJzdGF0aW9uaWQiOjk4MTIyMzcwMzMzNTQxMDYyNSwiYWRtaW5pc3RyYXRvciI6ZmFsc2UsImV4cCI6MTY1NTg0MDQ0Nn0.eX0dinc72s1QsXqOFxX67XU_qrCyhXvFJvVuruKyrojTAtvGOSemFfhATmGOCfdSd_A_uStMlB6AzbCJZJKM8w";
-        // String token = "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI5ODQxMjUyNTk4MzE1ODU4ODkiLCJhY2NvdW50IjoiY291cmllciIsIm5hbWUiOiLlv6vpgJLlkZgiLCJvcmdpZCI6OTc3Mjc0OTMzMDIzMzQ0MDMzLCJzdGF0aW9uaWQiOjk4MTIyMzcwMzMzNTQxMDYyNSwiYWRtaW5pc3RyYXRvciI6ZmFsc2UsImV4cCI6MTY1NTE1NjY1NX0.jNLni8UYqQ0ZxHLNFVz4sTh_emrCSMKTQyltc77B5z7sHEEAsC0qUgdWUARmnQyp0NskeUKQtWpSgWZ_T1ULKQ";
+        //上面方法中生成的token
+        String token = "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxMDAyNjIxMzAwOTkwMDc2NzA1IiwiYWNjb3VudCI6InpoYW5nc2FuIiwibmFtZSI6IuW8oOS4iSIsIm9yZ2lkIjoxMDAyNjE5NTU4MzU3NDI1OTUzLCJzdGF0aW9uaWQiOjk4MTIyMzcwMzMzNTQxMDYyNSwiYWRtaW5pc3RyYXRvciI6ZmFsc2UsImV4cCI6MTY1OTEzNDA0MH0.WBZaeBvmuw202raw7JvvHnIMpST28d0gv6ufVDenL_iGQwdClucUfd3YPLg9BLoiosaP16SEuB1nM_-HWl8rUA";
         AuthUserInfoDTO authUserInfo = this.tokenCheckService.parserToken(token);
         System.out.println(authUserInfo);
 
         System.out.println(JSONUtil.toJsonStr(authUserInfo));
-
     }
 }
