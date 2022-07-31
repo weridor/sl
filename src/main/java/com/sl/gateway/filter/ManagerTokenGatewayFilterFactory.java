@@ -1,20 +1,14 @@
 package com.sl.gateway.filter;
 
-import com.google.common.collect.Lists;
-import com.itheima.auth.factory.AuthTemplateFactory;
-import com.itheima.auth.sdk.AuthTemplate;
 import com.itheima.auth.sdk.common.AuthSdkException;
 import com.itheima.auth.sdk.dto.AuthUserInfoDTO;
 import com.itheima.auth.sdk.service.TokenCheckService;
 import com.sl.gateway.config.MyConfig;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 后台管理员token拦截处理

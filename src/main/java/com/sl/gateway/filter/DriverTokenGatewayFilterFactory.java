@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 司机token拦截处理
+ * 司机端token拦截处理
  */
 @Component
 @Slf4j

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 快递员token拦截处理
+ * 用户端token拦截处理
  */
 @Slf4j
 @Component
