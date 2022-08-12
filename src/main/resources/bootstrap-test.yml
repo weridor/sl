@@ -64,6 +64,13 @@ spring:
             - StripPrefix=1
             - ManagerToken
             - AddRequestHeader=X-Request-From, sl-express-gateway
+        - id: sl-express-ms-trade
+          uri: lb://sl-express-ms-trade
+          predicates:
+            - Path=/trade/notify/**
+          filters:
+            - StripPrefix=1
+            - AddRequestHeader=X-Request-From, sl-express-gateway
 itcast:
   authority:
     host: ${authority.host} #authority服务地址,根据实际情况更改
