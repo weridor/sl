@@ -5,8 +5,6 @@ spring:
     name: sl-express-gateway
   profiles:
     active: local
-  main:
-    web-application-type: reactive #网关基于webflux也就是nio实现，与webmvc不同，由于引入了web模块，所以需要设置成reactive
   mvc:
     pathmatch:
       #解决异常：swagger Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
