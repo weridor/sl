@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "sl.jwt")
 @Data
 public class JwtProperties {
-    private String userSecretKey;
-    private long userTtl;
 
+    private String publicKey;
 }

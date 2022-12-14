@@ -1,6 +1,7 @@
 package com.sl.gateway.filter;
 
 import com.itheima.auth.sdk.dto.AuthUserInfoDTO;
+import com.sl.transport.common.constant.Constants;
 
 /**
  * 鉴权业务的回调，具体逻辑由 GatewayFilterFactory 具体完成
@@ -27,5 +28,14 @@ public interface AuthFilter {
      * @return 是否通过
      */
     Boolean auth(String token, AuthUserInfoDTO authUserInfo, String path);
+
+    /**
+     * 请求中携带token的名称
+     *
+     * @return 头名称
+     */
+    default String tokenHeaderName() {
+        return Constants.GATEWAY.AUTHORIZATION;
+    }
 
 }

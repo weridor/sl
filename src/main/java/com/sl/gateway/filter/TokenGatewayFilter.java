@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.itheima.auth.sdk.dto.AuthUserInfoDTO;
 import com.sl.gateway.config.MyConfig;
+import com.sl.transport.common.constant.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -33,7 +34,7 @@ public class TokenGatewayFilter implements GatewayFilter, Ordered {
         }
 
         //获取header的参数
-        String token = exchange.getRequest().getHeaders().getFirst("Authorization");
+        String token = exchange.getRequest().getHeaders().getFirst(this.authFilter.tokenHeaderName());
         if (StrUtil.isEmpty(token)) {
             //没有权限
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
@@ -42,10 +43,10 @@ public class TokenGatewayFilter implements GatewayFilter, Ordered {
 
         //校验token
         AuthUserInfoDTO authUserInfoDTO = null;
-        try{ //捕获token校验异常
+        try { //捕获token校验异常
             authUserInfoDTO = this.authFilter.check(token);
-        }catch (Exception e){
-            log.error("权限校验失败，e:",e);
+        } catch (Exception e) {
+            log.error("权限校验失败，e:", e);
         }
         if (ObjectUtil.isEmpty(authUserInfoDTO)) {
             //token失效 或 伪造
@@ -57,8 +58,8 @@ public class TokenGatewayFilter implements GatewayFilter, Ordered {
         Boolean result = false;
         try { //捕获鉴权异常
             result = this.authFilter.auth(token, authUserInfoDTO, path);
-        }catch (Exception e){
-            log.error("鉴权失败，e:",e);
+        } catch (Exception e) {
+            log.error("鉴权失败，e:", e);
         }
         if (!result) {
             //没有权限
@@ -67,8 +68,8 @@ public class TokenGatewayFilter implements GatewayFilter, Ordered {
         }
 
         //增加参数
-        exchange.getRequest().mutate().header("userInfo", JSONUtil.toJsonStr(authUserInfoDTO));
-        exchange.getRequest().mutate().header("token", token);
+        exchange.getRequest().mutate().header(Constants.GATEWAY.USERINFO, JSONUtil.toJsonStr(authUserInfoDTO));
+        exchange.getRequest().mutate().header(Constants.GATEWAY.TOKEN, token);
 
         //校验通过放行
         return chain.filter(exchange);
@@ -78,4 +79,5 @@ public class TokenGatewayFilter implements GatewayFilter, Ordered {
     public int getOrder() {
         return Integer.MIN_VALUE;
     }
+
 }

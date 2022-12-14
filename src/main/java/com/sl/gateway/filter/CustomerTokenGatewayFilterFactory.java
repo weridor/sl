@@ -3,6 +3,7 @@ package com.sl.gateway.filter;
 import com.itheima.auth.sdk.dto.AuthUserInfoDTO;
 import com.sl.gateway.config.MyConfig;
 import com.sl.gateway.properties.JwtProperties;
+import com.sl.transport.common.constant.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -38,5 +39,10 @@ public class CustomerTokenGatewayFilterFactory extends AbstractGatewayFilterFact
     public Boolean auth(String token, AuthUserInfoDTO authUserInfoDTO, String path) {
         //普通用户不需要校验角色
         return true;
+    }
+
+    @Override
+    public String tokenHeaderName() {
+        return Constants.GATEWAY.ACCESS_TOKEN;
     }
 }
