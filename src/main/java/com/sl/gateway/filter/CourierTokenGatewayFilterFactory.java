@@ -1,6 +1,5 @@
 package com.sl.gateway.filter;
 
-import com.itheima.auth.sdk.common.AuthSdkException;
 import com.itheima.auth.sdk.dto.AuthUserInfoDTO;
 import com.itheima.auth.sdk.service.TokenCheckService;
 import com.sl.gateway.config.MyConfig;
@@ -30,13 +29,8 @@ public class CourierTokenGatewayFilterFactory extends AbstractGatewayFilterFacto
 
     @Override
     public AuthUserInfoDTO check(String token) {
-        try {
-            //校验token
-            return tokenCheckService.parserToken(token);
-        } catch (AuthSdkException e) {
-            // 校验失败
-        }
-        return null;
+        //校验token
+        return tokenCheckService.parserToken(token);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.sl.gateway.filter;
 
-import com.itheima.auth.sdk.common.AuthSdkException;
 import com.itheima.auth.sdk.dto.AuthUserInfoDTO;
 import com.itheima.auth.sdk.service.TokenCheckService;
 import com.sl.gateway.config.MyConfig;
@@ -23,18 +22,14 @@ public class ManagerTokenGatewayFilterFactory extends AbstractGatewayFilterFacto
 
     @Override
     public GatewayFilter apply(Object config) {
+        //由于实现了AuthFilter接口，所以可以传递this对象到TokenGatewayFilter中
         return new TokenGatewayFilter(this.myConfig, this);
     }
 
     @Override
     public AuthUserInfoDTO check(String token) {
-        try {
-            //校验token
-            return tokenCheckService.parserToken(token);
-        } catch (AuthSdkException e) {
-            // 校验失败
-        }
-        return null;
+        //校验token
+        return tokenCheckService.parserToken(token);
     }
 
     @Override
